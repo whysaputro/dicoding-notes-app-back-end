@@ -7,6 +7,7 @@ class UsersHandler {
 
     this.postUserHandler = this.postUserHandler.bind(this);
     this.getUserByIdHandler = this.getUserByIdHandler.bind(this);
+    this.getUsersByUsernameHandler = this.getUsersByUsernameHandler.bind(this);
   }
 
   async postUserHandler(request, h) {
@@ -25,17 +26,17 @@ class UsersHandler {
         message: 'User berhasil ditambahkan',
         data: {
           userId,
-        }
+        },
       });
 
       response.code(201);
       return response;
     } catch (error) {
-      if(error instanceof ClientError) {
+      if (error instanceof ClientError) {
         const response = h.response({
           status: 'fail',
           message: error.message,
-        })
+        });
 
         response.code(error.statusCode);
         return response;
@@ -43,16 +44,16 @@ class UsersHandler {
 
       const response = h.response({
         status: 'error',
-        message: 'Terjadi kegagalan pada server'
-      })
+        message: 'Terjadi kegagalan pada server',
+      });
 
-      response.code(500);
       console.error(error);
+      response.code(500);
       return response;
     }
   }
 
-  async getUserByIdHandler(request, h){
+  async getUserByIdHandler(request, h) {
     try {
       const { id } = request.params;
       const user = await this._service.getUserById(id);
@@ -60,15 +61,15 @@ class UsersHandler {
       return {
         status: 'success',
         data: {
-          user
-        }
-      }
+          user,
+        },
+      };
     } catch (error) {
-      if(error instanceof ClientError){
+      if (error instanceof ClientError) {
         const response = h.response({
           status: 'fail',
-          message: error.message
-        })
+          message: error.message,
+        });
 
         response.code(error.statusCode);
         return response;
@@ -76,9 +77,43 @@ class UsersHandler {
 
       const response = h.response({
         status: 'error',
-        message: 'Terjadi kegagalan pada server'
-      })
+        message: 'Terjadi kegagalan pada server',
+      });
 
+      console.error(error);
+      response.code(500);
+      return response;
+    }
+  }
+
+  async getUsersByUsernameHandler(request, h){
+    try {
+      const { username = '' } = request.query;
+      const users = await this._service.getUserByUsername(username);
+
+      return {
+        status: 'success',
+        data: {
+          users
+        }
+      }
+    } catch (error) {
+      if (error instanceof ClientError){
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+
+        response.code(error.statusCode);
+        return response;
+      }
+
+      const response = h.response({
+        status: 'error',
+        message: 'Terjadi kegagalan pada server',
+      });
+
+      console.error(error);
       response.code(500);
       return response;
     }

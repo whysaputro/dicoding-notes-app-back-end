@@ -55,8 +55,8 @@ class AuthenticationsHandler {
         message: 'Terjadi kegagalan pada server',
       });
 
-      response.code(500);
       console.error(error);
+      response.code(500);
       return response;
     }
   }
@@ -93,8 +93,8 @@ class AuthenticationsHandler {
         message: 'Terjadi kegagalan pada server',
       });
 
-      response.code(500);
       console.error(error);
+      response.code(500);
       return response;
     }
   }
@@ -128,8 +128,8 @@ class AuthenticationsHandler {
         message: 'Terjadi kegagalan pada server',
       });
 
-      response.code(500);
       console.error(error);
+      response.code(500);
       return response;
     }
   }
